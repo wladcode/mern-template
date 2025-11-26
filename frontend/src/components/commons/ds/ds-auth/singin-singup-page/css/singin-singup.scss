@@ -1,0 +1,57 @@
+.sign-in-up-page {
+    display: flex;
+    flex-direction: column;
+
+    .title {
+        padding-top: 20px;
+    }
+    .subtitle {
+    }
+    .content {
+        padding-top: 20px;
+    }
+
+    .buttons {
+        padding-top: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+
+    .buttons-sn {
+        padding-top: 10px;
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.text-divider {
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+    --text-divider-gap: 1rem; // set a customizable gap between label and lines
+
+    &::before,
+    &::after {
+        content: "";
+        height: 1px;
+        background-color: silver;
+        flex-grow: 1; // both lines will expand to occupy the available space
+    }
+
+    &::before {
+        margin-right: var(--text-divider-gap);
+    }
+
+    &::after {
+        margin-left: var(--text-divider-gap);
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    /* For tablets: */
+}
+
+@media only screen and (min-width: 768px) {
+    /* For desktop: */
+}

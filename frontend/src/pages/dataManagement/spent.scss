@@ -1,0 +1,13 @@
+.card-custom {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 15px;
+  background-color: #95dada;
+  border: 1px solid grey;
+  transform: translateZ(0) !important;
+  transition: transform 0.25s ease-out !important;
+  &:hover {
+    transform: scale(1.05) !important;
+  }
+}

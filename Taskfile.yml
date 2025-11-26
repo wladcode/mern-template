@@ -1,0 +1,48 @@
+version: "3"
+
+vars:
+  IMAGE_NAME: easydash-mern
+  LOCAL_IMAGE: local/{{.IMAGE_NAME}}:SNAPSHOT
+  DOCKER_HUB_IMAGE_VERSION: chamow01/{{.IMAGE_NAME}}:v1
+  DOCKER_HUB_IMAGE_FINAL: chamow01/{{.IMAGE_NAME}}:latest
+
+dotenv: [".env", "{{.ENV}}/.env.", "{{.HOME}}/.env"]
+
+tasks:
+  start-frontend:
+    desc: Start frontend locally
+    cmds:
+      - cd frontend && npm install && npm run dev
+
+  start-backend:
+    desc: Start backend locally
+    cmds:
+      - npm install && npm run backend
+
+  docker-local-image:
+    desc: Build Docker image
+    cmds:
+      - docker build -t {{.LOCAL_IMAGE}} .
+
+  docker-dockerhub-image:
+    desc: Build Docker image
+    cmds:
+      - docker build -t {{.DOCKER_HUB_IMAGE_VERSION}} .
+
+  docker-start-local:
+    desc: Start docker image  locally
+    cmds:
+      - task: "docker-local-image"
+      - task: "docker-delete-container"
+      - docker run -it --name {{.IMAGE_NAME}} -e CONNECTION_MD_DC_EASY_DASH=$CONNECTION_MD_DC_EASY_DASH -e JWT_SECRET=$JWT_SECRET -p 5060:5060 {{.LOCAL_IMAGE}}
+
+  docker-delete-container:
+    desc: Delete container
+    cmds:
+      - docker rm -f {{.IMAGE_NAME}}
+
+  publish-image:
+    desc: Push image on docker hub
+    cmds:
+      - task: "docker-dockerhub-image"
+      - docker login && docker push {{.DOCKER_HUB_IMAGE_VERSION}}

@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@spentComponents/*": ["src/pages/dataManagement/components/*"],
+      "@utils/*": ["src/utils/*"],
+      "@redux/*": ["src/redux/*"]
+    }
+  }
+}

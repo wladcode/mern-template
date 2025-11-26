@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  # The name of your service (used as the hostname within the Docker network)
+  mongodb:
+    image: mongo:latest # Use the official MongoDB image
+    container_name: mongodb_dev # A friendly name for the running container
+    restart: always # Ensures the container restarts if it fails or the Docker daemon restarts
+    environment:
+      # Optional: Define the root user/password for initial setup
+      MONGO_INITDB_ROOT_USERNAME: user
+      MONGO_INITDB_ROOT_PASSWORD: password123
+    ports:
+      # Map the container port (27017) to a port on your local machine (27017)
+      - "27017:27017"
+    volumes:
+      # CRITICAL: This line persists your data
+      - mongo_data:/data/db
+
+# Define the volume where the data will be stored
+volumes:
+  mongo_data:
+    driver: local

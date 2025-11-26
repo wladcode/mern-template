@@ -1,0 +1,50 @@
+$panel-primary-background-color: white;
+$panel-secondary-background-color: #ededf2;
+$border-style: 1px solid silver;
+$border-primary-radius: 32px;
+$border-secondary-radius: 16px;
+
+.home-page {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+
+    .sign-in-and-sign-up {
+        display: flex;
+        flex-direction: column;
+        border: $border-style;
+        border-radius: $border-primary-radius;
+        //padding: 20px 40px;
+        background-color: $panel-primary-background-color;
+
+        .login-logup {
+            border: none;
+            //border-right:solid 1px red;
+            border-bottom-left-radius: $border-primary-radius;
+            border-bottom-right-radius: $border-primary-radius;
+            background-color: $panel-secondary-background-color;
+
+            padding: 10px 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .info-banner {
+            width: auto;
+
+            .info {
+                text-align: center;
+                padding: 10px 30px;
+            }
+
+            .banner {
+                & img {
+                    width: 80%;
+                }
+            }
+        }
+    }
+}

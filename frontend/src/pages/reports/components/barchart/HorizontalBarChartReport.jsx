@@ -7,6 +7,8 @@ import { PropTypes } from "prop-types";
 
 const HorizontalBarChartReport = ({
   xLabel,
+  xDataKey,
+  serieDataKey,
   dataForReport = [],
   handleBarClick = null,
   minValue = 1,
@@ -25,7 +27,7 @@ const HorizontalBarChartReport = ({
 
   useEffect(() => {
     const grandTotal = dataForReport.reduce((acc, item) => {
-      return acc + item.totalAmount;
+      return acc + item.VALOR_FAC;
     }, 0);
 
     setGrandTotal(grandTotal);
@@ -42,7 +44,7 @@ const HorizontalBarChartReport = ({
         dataset={dataForReport}
         series={[
           {
-            dataKey: "totalAmount",
+            dataKey: serieDataKey,
             label: `Total: ${getFormattedMoney(grandTotal)}`,
             color: "#4e79a7",
             highlightScope: {
@@ -59,7 +61,7 @@ const HorizontalBarChartReport = ({
               fontWeight: "bold",
             },
             scaleType: "band",
-            dataKey: "groupName",
+            dataKey: xDataKey,
             tickPlacement: "middle",
             tickLabelPlacement: "middle",
             tickLabelStyle: {
@@ -107,6 +109,8 @@ const HorizontalBarChartReport = ({
 
 HorizontalBarChartReport.propTypes = {
   xLabel: PropTypes.string.isRequired,
+  xDataKey: PropTypes.string.isRequired,
+  serieDataKey: PropTypes.string.isRequired,
   dataForReport: PropTypes.array.isRequired,
   handleBarClick: PropTypes.func,
   minValue: PropTypes.number,

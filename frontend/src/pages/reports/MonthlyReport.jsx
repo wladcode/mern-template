@@ -3,14 +3,15 @@ import { Box } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
-import { useSelector } from "react-redux";
-import BarChartReportBySpent from "./components/barchart/BarChartReportBySpent";
 import DSButtonComponent from "@components/commons/ds/ds-button/ds-button.component";
 import { startOfDay } from "date-fns";
 import { getSplitDate } from "@utils/spents";
+import { PropTypes } from "prop-types";
+import VerticalBarChartReport from "./components/barchart/VerticalBarChartReport";
 
-function MonthlyReport() {
-  const spentListAll = useSelector((state) => state.spent.spentListAll);
+function MonthlyReport({
+  allData  = [],
+}) {
   const [dataForReport, setDataForReport] = useState([]);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [allValue, setAllValue] = useState(null);
@@ -21,24 +22,38 @@ function MonthlyReport() {
   };
 
   useEffect(() => {
+    const orderedData = Object.values( allData).sort((a, b) => new Date(b.FECHA) - new Date(a.FECHA));
     if (allValue === "all") {
-      setDataForReport(spentListAll);
+      setDataForReport(orderedData);
     } else {
-      const filteredSpent = spentListAll.filter((spent) => {
+      const filteredSpent = orderedData.filter((item) => {
         const current = startOfDay(currentDate).toISOString();
-        const arraySpentDate = getSplitDate(spent.date);
+        const arraySpentDate = getSplitDate(item.FECHA);
         const arrayCurrentDate = getSplitDate(current);
         return arraySpentDate[1] === arrayCurrentDate[1];
       });
 
       setDataForReport(filteredSpent);
     }
-  }, [spentListAll, allValue, currentDate]);
+  }, [allData, allValue, currentDate]);
 
   const handleDateChange = (newDate) => {
     setCurrentDate(newDate);
     setAllValue(null);
   };
+
+   /* const handleBarClick = (d) => {
+      let recordSelected = dataForReport[d.dataIndex];
+      const { items } = recordSelected;
+  
+      const orderedItems = orderedByDate(items);
+  
+      recordSelected.items = orderedItems;
+  
+      if (selectItem) {
+        selectItem(recordSelected);
+      }
+    };*/
 
   return (
     <Box
@@ -93,11 +108,20 @@ function MonthlyReport() {
         <DSButtonComponent onClick={handleAllValue}>View all</DSButtonComponent>
       </Box>
 
-      <BarChartReportBySpent spentList={dataForReport} customHigh={700}/>
+      <VerticalBarChartReport
+              xLabel="Payments of month"
+              xDataKey="MARCA"
+              serieDataKey="VALOR_FAC"
+              dataForReport={dataForReport}
+              //handleBarClick={handleBarClick}
+              customHigh={700}
+            />
     </Box>
   );
 }
 
-MonthlyReport.propTypes = {};
+MonthlyReport.propTypes = {
+  allData: PropTypes.array.isRequired,
+};
 
 export default MonthlyReport;

@@ -1,10 +1,10 @@
-import { Box, Container, Tab, Tabs } from "@mui/material";
+import { Box, Tab, Tabs } from "@mui/material";
 import { useEffect, useState } from "react";
 import { PropTypes } from "prop-types";
-import YearlyReport from "./reports/YearlyReport";
 import MonthlyReport from "./reports/MonthlyReport";
-import { useDispatch } from "react-redux";
-import { loadAllExample } from "@redux/exampleSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { loadAllExampleList } from "@redux/exampleSlice";
+import ResponsiveBarChart from "./reports/components/barchart/ResponsiveBarChart";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -30,16 +30,37 @@ CustomTabPanel.propTypes = {
 
 export default function Dashboard() {
   const [value, setValue] = useState(0);
+  const allData = useSelector((state) => state.example.exampleListAll);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadAllExample({}));
+    dispatch(loadAllExampleList({}));
   }, [dispatch]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const renderYearlyReport = () => {
+    return (
+      <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 1,
+      }}
+    >
+      <ResponsiveBarChart
+        dataForReport={allData}
+        minValue={1200}
+        maxValue={2000}
+        customHigh={350}
+      />
+    </Box>
+    )
+  }
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -64,10 +85,10 @@ export default function Dashboard() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <YearlyReport />
+        {renderYearlyReport()}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <MonthlyReport />
+        <MonthlyReport allData={allData} />
       </CustomTabPanel>
     </Box>
   );

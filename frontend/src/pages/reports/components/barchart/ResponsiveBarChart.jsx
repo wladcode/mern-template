@@ -11,6 +11,8 @@ const ResponsiveBarChart = ({
   customHigh = 500,
   customHighHorizontal = 250,
   xLabel = "Payments in the year",
+  xDataKey = "MARCA",
+  serieDataKey = "VALOR_FAC",
 }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm")); // Detect small screens
@@ -20,6 +22,8 @@ const ResponsiveBarChart = ({
       {isSmallScreen ? (
         <VerticalBarChartReport
           xLabel={xLabel}
+          xDataKey={xDataKey}
+          serieDataKey={serieDataKey}
           dataForReport={dataForReport}
           handleBarClick={handleBarClick}
           minValue={minValue}
@@ -29,6 +33,8 @@ const ResponsiveBarChart = ({
       ) : (
         <HorizontalBarChartReport
           xLabel={xLabel}
+          xDataKey={xDataKey}
+          serieDataKey={serieDataKey}
           dataForReport={dataForReport}
           handleBarClick={handleBarClick}
           minValue={minValue}
@@ -48,6 +54,8 @@ ResponsiveBarChart.propTypes = {
   customHigh: PropTypes.number,
   customHighHorizontal: PropTypes.number,
   xLabel: PropTypes.string,
+  xDataKey: PropTypes.string,
+  serieDataKey: PropTypes.string,
 };
 
 export default ResponsiveBarChart;

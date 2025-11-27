@@ -9,10 +9,14 @@ vars:
 dotenv: [".env", "{{.ENV}}/.env.", "{{.HOME}}/.env"]
 
 tasks:
+  install-dependencies:
+    desc: Install all dependencies
+    cmds:
+      - cd frontend && npm install
   start-frontend:
     desc: Start frontend locally
     cmds:
-      - cd frontend && npm install && npm run dev
+      - cd frontend && npm run dev
 
   start-backend:
     desc: Start backend locally
